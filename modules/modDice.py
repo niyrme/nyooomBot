@@ -1,30 +1,24 @@
 # modDice.py
-import logging
 import re
 from random import randint
 
 from modules.mod import mod
 
 class module(mod):
-	def __init__(self, lgr: logging.Logger):
-		super().__init__(lgr)
+	def __init__(self):
+		super().__init__()
+		self.description = "Roll a Dice of any size!"
+		self.how = "`?dice {value}` (value mayb start with the letter 'd' e.g. d20)"
 
 	async def run(self, *args):
-		errMsg: str = """Argument must be a number > 1 any may start with 'd'.
-```
-Examples:
-  "?dice d20" rolls a D20
-  "?dice 13" rolls a D13
-```
-"""
 
 		# No arguments given; empty args: ([],)
-		if not args[0]:
-			return errMsg
+		if len(args[0]) != 0:
+			return self.how
 
 		dMax = re.search(r"^(|d|D)\d+", str(args[0][0]))
 		if not dMax:
-			return errMsg
+			return self.how
 
 		roll: int = -1
 		if dMax.group(0)[0] == 'd':
@@ -33,6 +27,6 @@ Examples:
 			roll = int(dMax.group(0))
 
 		if roll <= 1:
-			return errMsg
+			return self.how
 		else:
 			return f"Rolled: `{randint(1, roll)}`"

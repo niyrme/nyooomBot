@@ -22,11 +22,11 @@ class Client(discord.Client):
 	# Login
 	async def on_ready(self):
 		logger.info("Logged in.")
-		self.command: str = '?'
+		self.command: str = "?"
 		self.cmds: dict[str, mod.mod] = {
-			f"{self.command}dice": modDice.module(logger),
-			f"{self.command}help": modHelp.module(logger),
-			f"{self.command}ping": modPing.module(logger),
+			"dice": modDice.module(),
+			"help": modHelp.module(),
+			"ping": modPing.module(),
 		}
 
 	# Message-event
@@ -36,7 +36,7 @@ class Client(discord.Client):
 			return
 
 		# Check if msg is a command
-		if not str(msg.content).startswith(self.command) or len(str(msg.content)) <= 4:
+		if not str(msg.content).startswith(self.command) and len(str(msg.content)) <= 3:
 			return
 
 		response: str = ""
@@ -44,7 +44,40 @@ class Client(discord.Client):
 		logger.info(f"New Command: '{msg.content}'")
 
 		command, *commandArgs = str(msg.content).split(' ')
-		if str(command) in self.cmds:
+		command = str(command[1:]).lower()
+		c: str
+
+		if command == "how":
+			if len(commandArgs) == 0:
+				response = "Not enough arguments given"
+			else:
+				if commandArgs[0].startswith(self.command):
+					c = commandArgs[0][1:].strip()
+				else:
+					c = commandArgs[0].strip()
+
+				if c == "how":
+					response = "`?how {command}`"
+				elif c == "desc":
+					response = "`?desc {command}`"
+				elif c in self.cmds:
+					response = self.cmds[c].how
+		elif command == "desc":
+			if len(commandArgs) == 0:
+				response = "Not enough arguments given"
+			else:
+				if commandArgs[0].startswith(self.command):
+					c = commandArgs[0][1:].strip()
+				else:
+					c = commandArgs[0].strip()
+
+				if c == "how":
+					response = "Shows how to do a command."
+				elif c == "desc":
+					response = "Shows description of a command."
+				elif c in self.cmds:
+					response = self.cmds[c].description
+		elif command in self.cmds:
 			response = await self.cmds[command].run(commandArgs)
 
 

@@ -1,10 +1,11 @@
 # mod.py
-import logging
 from abc import abstractmethod
 
 class mod:
-	def __init__(self, lgr: logging.Logger):
-		self.logger: logging.Logger = lgr
+	description: str
+	how: str
+	def __init__(self):
+		pass
 
 	@abstractmethod
 	async def run(self, *args):

@@ -1,11 +1,11 @@
 # modHelp.py
-import logging
-
 from modules.mod import mod
 
 class module(mod):
-	def __init__(self, lgr: logging.Logger):
-		super().__init__(lgr)
+	def __init__(self):
+		super().__init__()
+		self.description = "Show help"
+		self.how = "`?help`"
 
 	async def run(self, *args):
 		del args

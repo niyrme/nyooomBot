@@ -1,11 +1,11 @@
 # modPing.py
-import logging
-
 from modules.mod import mod
 
 class module(mod):
-	def __init__(self, lgr: logging.Logger):
-		super().__init__(lgr)
+	def __init__(self):
+		super().__init__()
+		self.description = "Reply `Pong!`"
+		self.how = "`?ping`"
 
 	async def run(self, *args):
 		del args
