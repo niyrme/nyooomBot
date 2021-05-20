@@ -1,0 +1,22 @@
+{
+	"name": "nyooomBot",
+
+	"dockerFile": "Dockerfile",
+
+	"settings": {
+		"terminal.integrated.shell.linux": null
+	},
+
+	"postCreateCommand": "pip3 install -r ./requirements.txt",
+
+	"extensions": [
+		"eamodio.gitlens",
+		"christian-kohler.path-intellisense",
+		"fabiospampinato.vscode-todo-plus",
+		"editorconfig.editorconfig",
+		"ms-python.python",
+		"frhtylcn.pythonsnippets",
+		"dongli.python-preview",
+		"ms-python.vscode-pylance",
+	]
+}
