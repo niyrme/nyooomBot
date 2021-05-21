@@ -2,4 +2,4 @@
 
 # nyooomBot
 
-A bot written in python.
+A bot written in Golang.
