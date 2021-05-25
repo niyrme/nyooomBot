@@ -3,24 +3,26 @@ package bot
 import (
 	"fmt"
 	"log"
-	"nyooomBot/bot/modules"
 	"strings"
+
+	mod "nyooomBot/bot/modules"
+	discord "nyooomBot/bot/modules/Discord"
 
 	"github.com/bwmarrin/discordgo"
 )
 
-var commands map[string]modules.Module = map[string]modules.Module{
-	"ping": modules.ModPing,
-	"help": modules.ModHelp,
-	"dice": modules.ModDice,
+var commandsDiscord map[string]mod.Module = map[string]mod.Module{
+	"ping": discord.ModPing,
+	"help": discord.ModHelp,
+	"dice": discord.ModDice,
 }
 
 func messageHandler(s *discordgo.Session, msg *discordgo.MessageCreate) {
-	if msg.Author.ID == BotDiscord.ID {
+	if msg.Author.ID == DiscordBot.ID {
 		return
 	}
 
-	if string(msg.Content[0]) != BotDiscord.Prefix {
+	if msg.Content[0] != '/' {
 		return
 	}
 
@@ -37,11 +39,11 @@ func messageHandler(s *discordgo.Session, msg *discordgo.MessageCreate) {
 			resp = "Not enough arguments given! Expected: 1; Got: 0"
 		} else {
 			if args[0] == "how" {
-				resp = "`?how {command}`\n`{command}` should NOT include the `?`"
+				resp = "`/how {command}`\n`{command}` should NOT include the `/`"
 			} else if args[0] == "desc" {
-				resp = "`?desc {command}`\n`{command}` should NOT include the `?`"
-			} else if _, ok := commands[args[0]]; ok {
-				resp = commands[args[0]].How
+				resp = "`/desc {command}`\n`{command}` should NOT include the `/`"
+			} else if _, ok := commandsDiscord[args[0]]; ok {
+				resp = commandsDiscord[args[0]].How
 			} else {
 				resp = fmt.Sprintf("Unknown command `%s`", args[0])
 			}
@@ -54,14 +56,14 @@ func messageHandler(s *discordgo.Session, msg *discordgo.MessageCreate) {
 				resp = "Shows how to use a command"
 			} else if args[0] == "desc" {
 				resp = "Shows the description of a command"
-			} else if _, ok := commands[args[0]]; ok {
-				resp = commands[args[0]].Description
+			} else if _, ok := commandsDiscord[args[0]]; ok {
+				resp = commandsDiscord[args[0]].Description
 			} else {
 				resp = fmt.Sprintf("Unknown command `%s`", args[0])
 			}
 		}
-	} else if _, ok := commands[cmd]; ok {
-		resp = commands[cmd].Run(msg.Message, args)
+	} else if _, ok := commandsDiscord[cmd]; ok {
+		resp = commandsDiscord[cmd].Run(args)
 	} else {
 		resp = fmt.Sprintf("Unknown command `%s`", args[0])
 	}

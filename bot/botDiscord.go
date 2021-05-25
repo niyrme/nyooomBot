@@ -2,24 +2,26 @@ package bot
 
 import (
 	"errors"
-	"log"
 
 	"github.com/bwmarrin/discordgo"
 )
 
-type Bot struct {
-	Prefix  string
+type BotDiscord struct {
 	Token   string
 	Session *discordgo.Session
 	ID      string
+
+	Running bool
 }
 
-var BotDiscord Bot = Bot{}
+var DiscordBot BotDiscord = BotDiscord{
+	Running: false,
+}
 
-func (b *Bot) Start() error {
+func (b *BotDiscord) Start() error {
 	// Check Bot
 	if b.Token == "" {
-		return errors.New("Bot token is undefined")
+		return errors.New("bot token is undefined")
 	}
 
 	if session, err := discordgo.New("Bot " + b.Token); err != nil {
@@ -35,23 +37,24 @@ func (b *Bot) Start() error {
 	}
 
 	if b.ID == "" {
-		return errors.New("Bot ID is undefined")
+		return errors.New("bot ID is undefined")
 	}
 
-	log.Println("[INFO] Adding handlers...")
+	LgrDiscord.Println("Adding handlers...")
 	b.Session.AddHandler(messageHandler)
 
-	log.Println("[INFO] Connecting...")
+	LgrDiscord.Println("Connecting...")
 	if err := b.Session.Open(); err != nil {
 		return errors.New("Error opening connection: %s" + err.Error())
 	}
 
-	log.Println("[INFO] Running..")
-	log.Printf("[INFO] Use %s to run commands\n", b.Prefix)
+	LgrDiscord.Println("Running..")
+	LgrDiscord.Printf("Use / to run commands\n")
 
+	b.Running = true
 	return nil
 }
 
-func (b *Bot) Stop() error {
+func (b *BotDiscord) Stop() error {
 	return b.Session.Close()
 }
