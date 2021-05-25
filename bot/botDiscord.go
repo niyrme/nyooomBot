@@ -49,7 +49,7 @@ func (b *BotDiscord) Start() error {
 	}
 
 	LgrDiscord.Println("Running..")
-	LgrDiscord.Printf("Use / to run commands\n")
+	LgrDiscord.Printf("Use ? to run commands\n")
 
 	b.Running = true
 	return nil

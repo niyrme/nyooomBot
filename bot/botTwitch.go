@@ -6,20 +6,11 @@ import (
 	"time"
 
 	mod "nyooomBot/bot/modules"
-	modTwitch "nyooomBot/bot/modules/Twitch"
 
 	"github.com/gempir/go-twitch-irc/v2"
 )
 
-var (
-	/// Regexes
-	regexCmd *regexp.Regexp = regexp.MustCompile(`^\?(\w+)\s?(\w+)?`)
-
-	commandsTwitch map[string]mod.Module = map[string]mod.Module{
-		"h":    modTwitch.ModH,
-		"dice": modTwitch.ModDice,
-	}
-)
+var regexCmd *regexp.Regexp = regexp.MustCompile(`^\?(\w+)\s?(\w+)?`)
 
 func StartBot(channel, oAuth string) (client *twitch.Client) {
 	client = twitch.NewClient("nyooomBot", oAuth)
@@ -41,11 +32,12 @@ func StartBot(channel, oAuth string) (client *twitch.Client) {
 				} else {
 					client.Say(channel, "You have nothing to tell me!")
 				}
-			} else if _, ok := commandsTwitch[cmd]; ok {
-				commandsTwitch[cmd].Run(args)
-			} else {
-				client.Say(channel, "Unknown command: "+cmd)
 			}
+
+			client.Say(
+				channel,
+				mod.AnswerCommand(cmd, args),
+			)
 		}
 	})
 
