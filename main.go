@@ -18,6 +18,7 @@ func main() {
 		log.Fatalf("Error loading config file! %s", err.Error())
 	}
 
+	client := bot.StartBot("niyrme", cfg.Token.Twitch)
 
 	bot.DiscordBot.Token = cfg.Token.Discord
 	if err := bot.DiscordBot.Start(); err != nil {
@@ -26,6 +27,10 @@ func main() {
 		bot.LgrDiscord.Println("Bot is running")
 	}
 
+	client.Join("niyrme")
+	if err := client.Connect(); err != nil {
+		bot.LgrTwitch.Fatalf("Failed to connect to twitch")
+	}
 
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
@@ -38,5 +43,9 @@ func main() {
 		}
 		bot.LgrDiscord.Println("Bot stopped successfully")
 	}
+
+	if err := client.Disconnect(); err != nil {
+		bot.LgrTwitch.Fatalf("Error stopping twitch bot cleanly! %s", err.Error())
 	}
+	bot.LgrTwitch.Println("Bot stopped successfully")
 }

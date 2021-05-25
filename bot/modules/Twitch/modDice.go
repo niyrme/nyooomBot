@@ -1,17 +1,15 @@
-package modules
+package modTwitch
 
 import (
 	"fmt"
 	"math/rand"
 	"strconv"
 
-	"github.com/bwmarrin/discordgo"
+	mod "nyooomBot/bot/modules"
 )
 
-var ModDice Module = Module{
-	Description: "Roll a Dice of any size!",
-	How:         "`?dice {size}`\n`{size}` must be a number greater than 1\nRanges from `1` to `9223372036854775807 (2^63 - 1)`",
-	Run: func(_ *discordgo.Message, args []string) string {
+var ModDice mod.Module = mod.Module{
+	Run: func(args []string) string {
 		if len(args) == 0 {
 			return "Not enough arguments given! Expected: 1; Got: 0"
 		}

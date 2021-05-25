@@ -6,6 +6,7 @@ import (
 
 type TokenConfig struct {
 	Discord string
+	Twitch  string
 }
 
 type Config struct {
