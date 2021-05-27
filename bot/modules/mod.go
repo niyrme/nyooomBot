@@ -2,7 +2,6 @@ package modules
 
 import (
 	"fmt"
-	"log"
 )
 
 var commands []Module = []Module{
@@ -36,38 +35,34 @@ func AnswerCommand(cmd string, args []string) (resp string) {
 		args = []string{""}
 	}
 
-	log.Printf("[DEBUG]   > cmd: %s | args: %v", cmd, args)
-
 	for _, c := range commands {
 		if cmd == "how" {
-			if args[0] == "" || args[0] == "how" {
+			switch args[0] {
+			case "":
 				resp = "`?how {command}`\n`{command}` should NOT include the `?`"
-			} else if args[0] == "desc" {
+			case "how":
+				resp = "`?how {command}`\n`{command}` should NOT include the `?`"
+			case "desc":
 				resp = "`?desc {command}`\n`{command}` should NOT include the `?`"
-			} else {
+			default:
 				if contains(c.Keys, args[0]) {
 					resp = c.How
-				} else {
-					resp = fmt.Sprintf("Unknown command `%s`", args[0])
 				}
 			}
 		} else if cmd == "desc" {
-			if args[0] == "" {
+			switch args[0] {
+			case "":
 				resp = "`?desc {command}`\n`{command}` should NOT include the `?`"
-			} else if args[0] == "how" {
+			case "how":
 				resp = "Shows how to use a command"
-			} else if args[0] == "desc" {
+			case "desc":
 				resp = "Shows the description of a command"
-			} else {
+			default:
 				if contains(c.Keys, args[0]) {
 					resp = c.Description
-				} else {
-					resp = fmt.Sprintf("Unknown command `%s`", args[0])
 				}
 			}
-		}
-
-		if contains(c.Keys, cmd) {
+		} else if contains(c.Keys, cmd) {
 			resp = c.Run(args)
 		}
 	}

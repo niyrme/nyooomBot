@@ -5,10 +5,10 @@ var ModPing Module = Module{
 		"ping",
 	},
 
-	Description: "Responds with `Pong!`",
+	Description: "Responds with 'Pong!'",
 	How:         "`?ping`",
 
 	Run: func(args []string) (resp string) {
-		return "`Pong!`"
+		return "Pong!"
 	},
 }

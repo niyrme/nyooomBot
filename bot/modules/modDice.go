@@ -8,11 +8,12 @@ import (
 
 var ModDice Module = Module{
 	Keys: []string{
+		"d",
 		"dice",
 	},
 
 	Description: "Roll a Dice of any size!",
-	How:         "`?dice {size}`\n`{size}` must be a number greater than 1\nRanges from `1` to `9223372036854775807 (2^63 - 1)`",
+	How:         "`?d {size}` or `?dice {size}`\n`{size}` must be a number greater than 1\nRanges from `1` to `9223372036854775807 (2^63 - 1)`",
 
 	Run: func(args []string) (resp string) {
 		resp = ""

@@ -7,7 +7,7 @@ var ModHelp Module = Module{
 	},
 
 	Description: "",
-	How:         "`?help`",
+	How:         "`?help` or `?h`",
 
 	Run: func(args []string) (resp string) {
 		return "A helpful message!"
