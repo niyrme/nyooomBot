@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	mod "nyooomBot/bot/modules"
+	"nyooomBot/logging"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -17,11 +18,10 @@ func messageHandler(s *discordgo.Session, msg *discordgo.MessageCreate) {
 	if p <= 1 {
 		p = 1
 	}
-	LgrDiscord.Printf(
-		"%s %s",
-		strings.Repeat(" ", p)+"<"+msg.Author.Username+">",
-		strings.ReplaceAll(msg.Content, "\n", " \\n "),
-	)
+	logging.LogDiscord(
+		strings.Repeat(" ", p) +
+			" <" + msg.Author.Username + "> " +
+			strings.ReplaceAll(msg.Content, "\n", " \\n "))
 
 	if msg.Content[0] != '?' {
 		return

@@ -7,6 +7,7 @@ import (
 	"syscall"
 
 	bot "nyooomBot/bot"
+	"nyooomBot/logging"
 
 	"github.com/joho/godotenv"
 )
@@ -21,10 +22,11 @@ func main() {
 		log.Fatalf("Error loading .env file! %s", err.Error())
 	}
 
-	bot.CreateLogger(bot.LGRs{
+	logging.Lgr = logging.LGRs{
 		Discord: cfg.Bot.Names.Discord,
 		Twitch:  cfg.Bot.Names.Twitch,
-	})
+		Info:    "INFO",
+	}
 
 	var (
 		/// channels
@@ -44,24 +46,26 @@ func main() {
 	go bot.TwitchBot.Start()
 
 	if err := <-bot.DiscordBot.C; err != nil {
-		bot.LgrDiscord.Printf("Error starting bot! %s", err.Error())
+		logging.LogDiscord("Error starting bot! " + err.Error())
 	}
 
 	if err := <-bot.TwitchBot.C; err != nil {
-		bot.LgrTwitch.Printf("Error starting bot! %s", err.Error())
+		logging.LogTwitch("Error starting bot! " + err.Error())
 	}
 
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc
 
+	logging.Info("Stopping bots...")
+
 	if bot.DiscordBot.Running {
 		go bot.DiscordBot.Stop()
 
 		if err := <-bot.DiscordBot.C; err != nil {
-			bot.LgrDiscord.Printf("Error stopping bot cleanly! %s", err.Error())
+			logging.LogDiscord("Error stopping bot cleanly! " + err.Error())
 		} else {
-			bot.LgrDiscord.Println("Bot stopped successfully")
+			logging.LogDiscord("Bot stopped successfully")
 		}
 	}
 
@@ -69,9 +73,9 @@ func main() {
 		go bot.TwitchBot.Stop()
 
 		if err := <-bot.TwitchBot.C; err != nil {
-			bot.LgrTwitch.Printf("Error stopping bot cleanly! %s", err.Error())
+			logging.LogTwitch("Error stopping bot cleanly! " + err.Error())
 		} else {
-			bot.LgrTwitch.Println("Bot stopped successfully")
+			logging.LogTwitch("Bot stopped successfully")
 		}
 	}
 }

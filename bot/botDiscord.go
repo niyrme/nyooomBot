@@ -2,6 +2,7 @@ package bot
 
 import (
 	"errors"
+	"nyooomBot/logging"
 	"sync"
 
 	"github.com/bwmarrin/discordgo"
@@ -48,10 +49,10 @@ func (bot *BotDiscord) Start() {
 		bot.ID = u.ID
 	}
 
-	LgrDiscord.Println("Adding handlers...")
+	logging.LogDiscord("Adding handlers...")
 	bot.Session.AddHandler(messageHandler)
 
-	LgrDiscord.Println("Connecting...")
+	logging.LogDiscord("Connecting...")
 	if err := bot.Session.Open(); err != nil {
 		bot.C <- errors.New("Error opening connection: " + err.Error())
 		return
@@ -59,8 +60,7 @@ func (bot *BotDiscord) Start() {
 
 	bot.Running = true
 
-	LgrDiscord.Println("Running..")
-	LgrDiscord.Printf("Use ? to run commands\n")
+	logging.LogDiscord("Running..")
 
 	bot.C <- nil
 }

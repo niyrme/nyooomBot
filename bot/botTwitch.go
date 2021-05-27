@@ -9,6 +9,7 @@ import (
 	"time"
 
 	mod "nyooomBot/bot/modules"
+	"nyooomBot/logging"
 
 	"github.com/gempir/go-twitch-irc/v2"
 )
@@ -32,7 +33,6 @@ var TwitchBot BotTwitch = BotTwitch{
 
 func colorMsg(hex, msg string) string {
 	hex = strings.TrimSpace(hex)
-	msg = strings.TrimSpace(msg)
 
 	var err error
 	strR, err := strconv.ParseInt(hex[0:2], 16, 64)
@@ -66,7 +66,7 @@ func (bot *BotTwitch) Start() {
 
 	bot.Client = twitch.NewClient("nyooomBot", bot.Token)
 	bot.Client.OnConnect(func() {
-		LgrTwitch.Println("Connected.")
+		logging.LogTwitch("Connected.")
 	})
 	bot.Client.OnPrivateMessage(func(message twitch.PrivateMessage) {
 		var msg string
@@ -79,11 +79,10 @@ func (bot *BotTwitch) Start() {
 		if p <= 1 {
 			p = 1
 		}
-		LgrTwitch.Printf(
-			"%s %s",
-			strings.Repeat(" ", p)+msg,
-			message.Message,
-		)
+		logging.LogTwitch(
+			strings.Repeat(" ", p) +
+				" " + msg + " " + // because ansi colors delete spaces
+				message.Message)
 
 		if matchCmd := regexCmd.FindStringSubmatch(message.Message); matchCmd != nil {
 			cmd := strings.TrimSpace(matchCmd[1])
@@ -113,8 +112,7 @@ func (bot *BotTwitch) Start() {
 	go bot.Client.Connect() // TODO: find a way to handle a potential error
 	go bot.Client.Join("niyrme")
 
-	LgrTwitch.Println("Running..")
-	LgrTwitch.Printf("Use ? to run commands\n")
+	logging.LogTwitch("Running..")
 
 	bot.C <- nil
 }
