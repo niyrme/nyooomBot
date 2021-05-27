@@ -16,13 +16,12 @@ func StartBot(channel, botName, oAuth string) (client *twitch.Client) {
 	client = twitch.NewClient(botName, oAuth)
 
 	client.OnPrivateMessage(func(message twitch.PrivateMessage) {
-		LgrTwitch.Printf("New message by `%s`: `%s`", message.User.Name, message.Message)
+		m := strings.ReplaceAll(message.Message, "\n", " \\n ")
+		LgrTwitch.Printf("%16s %s", "<"+message.User.Name+">", m)
 
 		if matchCmd := regexCmd.FindStringSubmatch(message.Message); matchCmd != nil {
 			cmd := strings.TrimSpace(matchCmd[1])
 			args := strings.Split(strings.TrimSpace(matchCmd[2]), " ")
-
-			LgrTwitch.Printf("New command by `%s`: (%v) | (%v)", message.User.Name, cmd, args)
 
 			if cmd == "disconnect" {
 				if message.User.Name == channel {

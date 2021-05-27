@@ -9,6 +9,9 @@ import (
 )
 
 func messageHandler(s *discordgo.Session, msg *discordgo.MessageCreate) {
+	m := strings.ReplaceAll(msg.Content, "\n", " \\n ")
+	LgrDiscord.Printf("%16s %s", "<"+msg.Author.Username+">", m)
+
 	if msg.Author.ID == DiscordBot.ID {
 		return
 	}
@@ -28,6 +31,4 @@ func messageHandler(s *discordgo.Session, msg *discordgo.MessageCreate) {
 		msg.ChannelID,
 		mod.AnswerCommand(cmd, args),
 	)
-
-	LgrDiscord.Printf("New command: {\"%s\" - %s}", msg.Content, msg.Author.Username)
 }

@@ -23,6 +23,11 @@ func main() {
 		log.Fatalf("Error loading .env file! %s", err.Error())
 	}
 
+	bot.CreateLogger(bot.LGRs{
+		Discord: cfg.Bot.Names.Discord,
+		Twitch:  cfg.Bot.Names.Twitch,
+	})
+
 	bot.DiscordBot.Token = os.Getenv("DISCORD_TOKEN")
 	if err := bot.DiscordBot.Start(); err != nil {
 		bot.LgrDiscord.Fatalf("Error starting bot! %s", err.Error())
