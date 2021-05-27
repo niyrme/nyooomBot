@@ -33,10 +33,16 @@ func (bot *BotTwitch) Start() {
 
 	bot.Client = twitch.NewClient("nyooomBot", bot.Token)
 	bot.Client.OnPrivateMessage(func(message twitch.PrivateMessage) {
+		var msg string
+			msg = "<" + message.User.Name + ">"
+		p := 16 - len(message.User.Name)
+		if p <= 1 {
+			p = 1
+		}
 		LgrTwitch.Printf(
-			"%16s %s",
-			"<"+message.User.Name+">",
-			strings.ReplaceAll(message.Message, "\n", " \\n "),
+			"%s %s",
+			strings.Repeat(" ", p)+msg,
+			message.Message,
 		)
 
 		if matchCmd := regexCmd.FindStringSubmatch(message.Message); matchCmd != nil {

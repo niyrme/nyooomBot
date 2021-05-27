@@ -28,8 +28,8 @@ func main() {
 
 	var (
 		/// channels
-		chanDiscord chan error = make(chan error)
-		chanTwitch  chan error = make(chan error)
+		chanDiscord chan error = make(chan error, 128)
+		chanTwitch  chan error = make(chan error, 128)
 	)
 
 	bot.DiscordBot.C = chanDiscord

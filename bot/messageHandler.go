@@ -13,9 +13,13 @@ func messageHandler(s *discordgo.Session, msg *discordgo.MessageCreate) {
 		return
 	}
 
+	p := 16 - len(msg.Author.Username)
+	if p <= 1 {
+		p = 1
+	}
 	LgrDiscord.Printf(
-		"%16s %s",
-		"<"+msg.Author.Username+">",
+		"%s %s",
+		strings.Repeat(" ", p)+"<"+msg.Author.Username+">",
 		strings.ReplaceAll(msg.Content, "\n", " \\n "),
 	)
 
