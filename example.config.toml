@@ -1,5 +1,4 @@
 [bot]
-name = "" # Name of the twitch bot
 twitchChannel = "" # Twitch channel to listen on
 
 	# Names of the loggers in console

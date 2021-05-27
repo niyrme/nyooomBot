@@ -9,12 +9,15 @@ import (
 )
 
 func messageHandler(s *discordgo.Session, msg *discordgo.MessageCreate) {
-	m := strings.ReplaceAll(msg.Content, "\n", " \\n ")
-	LgrDiscord.Printf("%16s %s", "<"+msg.Author.Username+">", m)
-
 	if msg.Author.ID == DiscordBot.ID {
 		return
 	}
+
+	LgrDiscord.Printf(
+		"%16s %s",
+		"<"+msg.Author.Username+">",
+		strings.ReplaceAll(msg.Content, "\n", " \\n "),
+	)
 
 	if msg.Content[0] != '?' {
 		return

@@ -11,9 +11,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var (
-	cfg Config = Config{}
-)
+var cfg Config = Config{}
 
 func main() {
 	if err := getConfig(); err != nil {
@@ -28,17 +26,29 @@ func main() {
 		Twitch:  cfg.Bot.Names.Twitch,
 	})
 
+	var (
+		/// channels
+		chanDiscord chan error = make(chan error)
+		chanTwitch  chan error = make(chan error)
+	)
+
+	bot.DiscordBot.C = chanDiscord
+	bot.TwitchBot.C = chanTwitch
+
 	bot.DiscordBot.Token = os.Getenv("DISCORD_TOKEN")
-	if err := bot.DiscordBot.Start(); err != nil {
-		bot.LgrDiscord.Fatalf("Error starting bot! %s", err.Error())
-	} else {
-		bot.LgrDiscord.Println("Bot is running")
+	bot.TwitchBot.Token = os.Getenv("TWITCH_TOKEN")
+
+	bot.TwitchBot.Channel = cfg.Bot.TwitchChannel
+
+	go bot.DiscordBot.Start()
+	go bot.TwitchBot.Start()
+
+	if err := <-bot.DiscordBot.C; err != nil {
+		bot.LgrDiscord.Printf("Error starting bot! %s", err.Error())
 	}
 
-	client := bot.StartBot(cfg.Bot.TwitchChannel, cfg.Bot.Name, os.Getenv("TWITCH_TOKEN"))
-	client.Join("niyrme")
-	if err := client.Connect(); err != nil {
-		bot.LgrTwitch.Fatalf("Failed to connect to twitch")
+	if err := <-bot.TwitchBot.C; err != nil {
+		bot.LgrTwitch.Printf("Error starting bot! %s", err.Error())
 	}
 
 	sc := make(chan os.Signal, 1)
@@ -46,15 +56,22 @@ func main() {
 	<-sc
 
 	if bot.DiscordBot.Running {
-		bot.LgrDiscord.Println("Stopping bot...")
-		if err := bot.DiscordBot.Stop(); err != nil {
-			bot.LgrDiscord.Fatalf("Error stopping discord bot cleanly! %s", err.Error())
+		go bot.DiscordBot.Stop()
+
+		if err := <-bot.DiscordBot.C; err != nil {
+			bot.LgrDiscord.Printf("Error stopping bot cleanly! %s", err.Error())
+		} else {
+			bot.LgrDiscord.Println("Bot stopped successfully")
 		}
-		bot.LgrDiscord.Println("Bot stopped successfully")
 	}
 
-	if err := client.Disconnect(); err != nil {
-		bot.LgrTwitch.Fatalf("Error stopping twitch bot cleanly! %s", err.Error())
+	if bot.TwitchBot.Running {
+		go bot.TwitchBot.Stop()
+
+		if err := <-bot.TwitchBot.C; err != nil {
+			bot.LgrTwitch.Printf("Error stopping bot cleanly! %s", err.Error())
+		} else {
+			bot.LgrTwitch.Println("Bot stopped successfully")
+		}
 	}
-	bot.LgrTwitch.Println("Bot stopped successfully")
 }

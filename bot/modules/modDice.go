@@ -13,7 +13,7 @@ var ModDice Module = Module{
 	},
 
 	Description: "Roll a Dice of any size!",
-	How:         "`?d {size}` or `?dice {size}`\n`{size}` must be a number greater than 1\nRanges from `1` to `9223372036854775807 (2^63 - 1)`",
+	How:         "`?d {size}` or `?dice {size}` | `{size}` must be a number greater than 1 | Ranges from `1` to `9223372036854775807 (2^63 - 1)`",
 
 	Run: func(args []string) (resp string) {
 		resp = ""
@@ -31,7 +31,7 @@ var ModDice Module = Module{
 				if roll < 1 {
 					resp = "Argument `{size}` must be a number geater than 1"
 				} else {
-					resp = fmt.Sprintf("Rolled a `%v`!", rand.Intn(int(roll))+1)
+					resp = fmt.Sprintf("Rolled `%v`!", rand.Intn(int(roll))+1)
 				}
 			}
 		}
