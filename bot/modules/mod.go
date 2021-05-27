@@ -50,6 +50,8 @@ func AnswerCommand(cmd string, args []string) (resp string) {
 			default:
 				if contains(c.Keys, args[0]) {
 					resp = c.How
+				} else if resp == "" {
+					resp = fmt.Sprintf("Unknown command %s", args[0])
 				}
 			}
 		} else if cmd == "desc" {
@@ -65,6 +67,8 @@ func AnswerCommand(cmd string, args []string) (resp string) {
 			default:
 				if contains(c.Keys, args[0]) {
 					resp = c.Description
+				} else if resp == "" {
+					resp = fmt.Sprintf("Unknown command %s", args[0])
 				}
 			}
 		} else if contains(ModCommands.Keys, cmd) {
