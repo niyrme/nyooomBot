@@ -1,0 +1,17 @@
+{
+	"name": "nyooomBot",
+
+	"dockerFile": "Dockerfile",
+	"settings": {
+		"terminal.integrated.shell.linux": null
+	},
+
+	"extensions": [
+		"eamodio.gitlens",
+		"christian-kohler.path-intellisense",
+		"fabiospampinato.vscode-todo-plus",
+		"editorconfig.editorconfig",
+		"golang.go",
+		"bungcip.better-toml"
+	]
+}
