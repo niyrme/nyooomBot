@@ -6,6 +6,7 @@ var ModHelp Module = Module{
 		"help",
 	},
 
+	Name:        "Help",
 	Description: "",
 	How:         "`?help` or `?h`",
 

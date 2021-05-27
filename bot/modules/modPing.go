@@ -5,6 +5,7 @@ var ModPing Module = Module{
 		"ping",
 	},
 
+	Name:        "Ping",
 	Description: "Responds with 'Pong!'",
 	How:         "`?ping`",
 

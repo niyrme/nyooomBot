@@ -14,6 +14,7 @@ type Module struct {
 	Keys []string
 
 	Description string
+	Name        string
 	How         string
 
 	Run func(args []string) (resp string)
@@ -44,6 +45,8 @@ func AnswerCommand(cmd string, args []string) (resp string) {
 				resp = "`?how {command}`\n`{command}` should NOT include the `?`"
 			case "desc":
 				resp = "`?desc {command}`\n`{command}` should NOT include the `?`"
+			case "commands":
+				resp = ModCommands.How
 			default:
 				if contains(c.Keys, args[0]) {
 					resp = c.How
@@ -57,11 +60,15 @@ func AnswerCommand(cmd string, args []string) (resp string) {
 				resp = "Shows how to use a command"
 			case "desc":
 				resp = "Shows the description of a command"
+			case "commands":
+				resp = ModCommands.Description
 			default:
 				if contains(c.Keys, args[0]) {
 					resp = c.Description
 				}
 			}
+		} else if contains(ModCommands.Keys, cmd) {
+			resp = ModCommands.Run(args)
 		} else if contains(c.Keys, cmd) {
 			resp = c.Run(args)
 		}

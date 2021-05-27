@@ -12,6 +12,7 @@ var ModDice Module = Module{
 		"dice",
 	},
 
+	Name:        "Dice",
 	Description: "Roll a Dice of any size!",
 	How:         "`?d {size}` or `?dice {size}` | `{size}` must be a number greater than 1 | Ranges from `1` to `9223372036854775807 (2^63 - 1)`",
 
