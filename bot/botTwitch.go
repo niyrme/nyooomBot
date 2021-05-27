@@ -1,7 +1,9 @@
 package bot
 
 import (
+	"fmt"
 	"regexp"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -28,13 +30,51 @@ var TwitchBot BotTwitch = BotTwitch{
 	Running: false,
 }
 
+func colorMsg(hex, msg string) string {
+	hex = strings.TrimSpace(hex)
+	msg = strings.TrimSpace(msg)
+
+	var err error
+	strR, err := strconv.ParseInt(hex[0:2], 16, 64)
+	if err != nil {
+		return msg
+	}
+	strG, err := strconv.ParseInt(hex[2:4], 16, 64)
+	if err != nil {
+		return msg
+	}
+	strB, err := strconv.ParseInt(hex[4:6], 16, 64)
+	if err != nil {
+		return msg
+	}
+
+	strR = strR * 100 / 255
+	strG = strG * 100 / 255
+	strB = strB * 100 / 255
+
+	return fmt.Sprintf(
+		"\033[38;2;%v;%v;%vm%s\033[0m",
+		strR,
+		strG,
+		strB,
+		msg,
+	)
+}
+
 func (bot *BotTwitch) Start() {
 	bot.mu.Lock()
 
 	bot.Client = twitch.NewClient("nyooomBot", bot.Token)
+	bot.Client.OnConnect(func() {
+		LgrTwitch.Println("Connected.")
+	})
 	bot.Client.OnPrivateMessage(func(message twitch.PrivateMessage) {
 		var msg string
+		if len(message.User.Color) == 7 {
+			msg = colorMsg(message.User.Color[1:], "<"+message.User.Name+">")
+		} else {
 			msg = "<" + message.User.Name + ">"
+		}
 		p := 16 - len(message.User.Name)
 		if p <= 1 {
 			p = 1
