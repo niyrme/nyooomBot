@@ -12,8 +12,8 @@ import (
 
 var regexCmd *regexp.Regexp = regexp.MustCompile(`^\?(\w+)\s?(\w+)?`)
 
-func StartBot(channel, oAuth string) (client *twitch.Client) {
-	client = twitch.NewClient("nyooomBot", oAuth)
+func StartBot(channel, botName, oAuth string) (client *twitch.Client) {
+	client = twitch.NewClient(botName, oAuth)
 
 	client.OnPrivateMessage(func(message twitch.PrivateMessage) {
 		LgrTwitch.Printf("New message by `%s`: `%s`", message.User.Name, message.Message)

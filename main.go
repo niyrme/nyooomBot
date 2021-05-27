@@ -7,6 +7,8 @@ import (
 	"syscall"
 
 	bot "nyooomBot/bot"
+
+	"github.com/joho/godotenv"
 )
 
 var (
@@ -15,17 +17,20 @@ var (
 
 func main() {
 	if err := getConfig(); err != nil {
-		log.Fatalf("Error loading config file! %s", err.Error())
+		log.Fatalf("Error loading config.toml file! %s", err.Error())
+	}
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("Error loading .env file! %s", err.Error())
 	}
 
-	bot.DiscordBot.Token = cfg.Token.Discord
+	bot.DiscordBot.Token = os.Getenv("DISCORD_TOKEN")
 	if err := bot.DiscordBot.Start(); err != nil {
 		bot.LgrDiscord.Fatalf("Error starting bot! %s", err.Error())
 	} else {
 		bot.LgrDiscord.Println("Bot is running")
 	}
 
-	client := bot.StartBot("niyrme", cfg.Token.Twitch)
+	client := bot.StartBot(cfg.Bot.TwitchChannel, cfg.Bot.Name, os.Getenv("TWITCH_TOKEN"))
 	client.Join("niyrme")
 	if err := client.Connect(); err != nil {
 		bot.LgrTwitch.Fatalf("Failed to connect to twitch")

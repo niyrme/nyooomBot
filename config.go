@@ -4,13 +4,19 @@ import (
 	"github.com/pelletier/go-toml"
 )
 
-type TokenConfig struct {
+type BotConfigNames struct {
 	Discord string
 	Twitch  string
 }
 
+type BotConfig struct {
+	Name          string
+	TwitchChannel string
+	Names         BotConfigNames
+}
+
 type Config struct {
-	Token TokenConfig
+	Bot BotConfig
 }
 
 func getConfig() error {
