@@ -26,7 +26,7 @@ func (mod *ModuleHelp) Run(args []string) (resp string) {
 	}
 
 	for _, cmd := range commands {
-		if contains(cmd.Super().Keys, args[0]) {
+		if Contains(cmd.Super().Keys, args[0]) {
 			resp = cmd.Super().How
 		}
 	}

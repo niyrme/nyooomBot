@@ -26,7 +26,11 @@ type Module struct {
 	How         string
 }
 
-func contains(s []string, str string) bool {
+func Contains(s []string, str string) bool {
+	if len(s) == 0 {
+		return false
+	}
+
 	for _, v := range s {
 		if v == str {
 			return true
@@ -41,7 +45,7 @@ func AnswerCommand(cmd string, args []string) (resp string) {
 	cmd = strings.TrimSpace(cmd)
 
 	for _, command := range commands {
-		if contains(command.Super().Keys, cmd) {
+		if Contains(command.Super().Keys, cmd) {
 			resp = command.Run(args)
 		}
 	}
