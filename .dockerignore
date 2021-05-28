@@ -1,0 +1,4 @@
+.devcontainer/
+.pre-commit-config.yaml
+.gitignore
+.editorconfig
