@@ -1,7 +1,0 @@
-[bot]
-twitchChannel = "" # Twitch channel to listen on
-
-	# Names of the loggers in console
-	[bot.names]
-	discord = "DISCORD"
-	twitch = "TWITCH"

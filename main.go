@@ -12,20 +12,9 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var cfg Config = Config{}
-
 func main() {
-	if err := getConfig(); err != nil {
-		log.Fatalf("Error loading config.toml file! %s", err.Error())
-	}
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("Error loading .env file! %s", err.Error())
-	}
-
-	logging.Lgr = logging.LGRs{
-		Discord: cfg.Bot.Names.Discord,
-		Twitch:  cfg.Bot.Names.Twitch,
-		Info:    "INFO",
 	}
 
 	var (
@@ -40,7 +29,7 @@ func main() {
 	bot.DiscordBot.Token = os.Getenv("DISCORD_TOKEN")
 	bot.TwitchBot.Token = os.Getenv("TWITCH_TOKEN")
 
-	bot.TwitchBot.Channel = cfg.Bot.TwitchChannel
+	bot.TwitchBot.Channel = os.Getenv("TWITCH_CHANNEL")
 
 	go bot.DiscordBot.Start()
 	go bot.TwitchBot.Start()

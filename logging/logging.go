@@ -29,8 +29,12 @@ func (l *LGRs) names() []string {
 }
 
 var (
-	max int = -1
-	Lgr LGRs
+	max int  = -1
+	Lgr LGRs = LGRs{
+		Discord: "DISCORD",
+		Twitch:  "TWITCH",
+		Info:    "INFO",
+	}
 )
 
 func Info(msg string) {
