@@ -111,7 +111,7 @@ func (bot *BotTwitch) Start() {
 	bot.mu.Unlock()
 
 	go bot.Client.Connect() // TODO: find a way to handle a potential error
-	go bot.Client.Join("niyrme")
+	go bot.Client.Join(bot.Channel)
 
 	bot.C <- nil
 }
