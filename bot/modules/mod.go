@@ -2,12 +2,21 @@ package modules
 
 import (
 	"fmt"
+	"strings"
 )
 
-var commands []Module = []Module{
-	ModDice,
-	ModHelp,
-	ModPing,
+var commands []_Module = []_Module{
+	&ModCommands,
+	&ModDesc,
+	&ModDice,
+	&ModHelp,
+	&ModHow,
+	&ModPing,
+}
+
+type _Module interface {
+	Run(arg []string) (resp string)
+	Super() Module
 }
 
 type Module struct {
@@ -16,8 +25,6 @@ type Module struct {
 	Description string
 	Name        string
 	How         string
-
-	Run func(args []string) (resp string)
 }
 
 func contains(s []string, str string) bool {
@@ -32,49 +39,11 @@ func contains(s []string, str string) bool {
 
 func AnswerCommand(cmd string, args []string) (resp string) {
 	resp = ""
-	if len(args) == 0 {
-		args = []string{""}
-	}
+	cmd = strings.TrimSpace(cmd)
 
-	for _, c := range commands {
-		if cmd == "how" {
-			switch args[0] {
-			case "":
-				resp = "`?how {command}`\n`{command}` should NOT include the `?`"
-			case "how":
-				resp = "`?how {command}`\n`{command}` should NOT include the `?`"
-			case "desc":
-				resp = "`?desc {command}`\n`{command}` should NOT include the `?`"
-			case "commands":
-				resp = ModCommands.How
-			default:
-				if contains(c.Keys, args[0]) {
-					resp = c.How
-				} else if resp == "" {
-					resp = fmt.Sprintf("Unknown command %s", args[0])
-				}
-			}
-		} else if cmd == "desc" {
-			switch args[0] {
-			case "":
-				resp = "`?desc {command}`\n`{command}` should NOT include the `?`"
-			case "how":
-				resp = "Shows how to use a command"
-			case "desc":
-				resp = "Shows the description of a command"
-			case "commands":
-				resp = ModCommands.Description
-			default:
-				if contains(c.Keys, args[0]) {
-					resp = c.Description
-				} else if resp == "" {
-					resp = fmt.Sprintf("Unknown command %s", args[0])
-				}
-			}
-		} else if contains(ModCommands.Keys, cmd) {
-			resp = ModCommands.Run(args)
-		} else if contains(c.Keys, cmd) {
-			resp = c.Run(args)
+	for _, command := range commands {
+		if contains(command.Super().Keys, cmd) {
+			resp = command.Run(args)
 		}
 	}
 

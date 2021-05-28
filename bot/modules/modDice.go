@@ -6,37 +6,47 @@ import (
 	"strconv"
 )
 
-var ModDice Module = Module{
-	Keys: []string{
-		"d",
-		"dice",
+var ModDice ModuleDice = ModuleDice{
+	Module{
+		Keys: []string{
+			"d",
+			"dice",
+		},
+
+		Name:        "Dice",
+		Description: "Roll a Dice of any size!",
+		How:         "`?d {size}` or `?dice {size}` | `{size}` must be a number greater than 1 | Ranges from `1` to `9223372036854775807 (2^63 - 1)`",
 	},
+}
 
-	Name:        "Dice",
-	Description: "Roll a Dice of any size!",
-	How:         "`?d {size}` or `?dice {size}` | `{size}` must be a number greater than 1 | Ranges from `1` to `9223372036854775807 (2^63 - 1)`",
+type ModuleDice struct {
+	Module
+}
 
-	Run: func(args []string) (resp string) {
-		resp = ""
+func (mod *ModuleDice) Run(args []string) (resp string) {
+	resp = ""
 
-		if len(args) == 0 {
-			resp = "Not enough arguments given! Expected: 1; Got: 0"
-		} else if args[0] == "" {
-			resp = "Not enough arguments given! Expected: 1; Got: 0"
-		}
+	if len(args) == 0 {
+		resp = "Not enough arguments given! Expected: 1; Got: 0"
+	} else if args[0] == "" {
+		resp = "Not enough arguments given! Expected: 1; Got: 0"
+	}
 
-		if resp == "" {
-			if roll, err := strconv.ParseInt(args[0], 10, 64); err != nil {
-				resp = "Could not parse given argument"
+	if resp == "" {
+		if roll, err := strconv.ParseInt(args[0], 10, 64); err != nil {
+			resp = "Could not parse given argument"
+		} else {
+			if roll < 1 {
+				resp = "Argument `{size}` must be a number geater than 1"
 			} else {
-				if roll < 1 {
-					resp = "Argument `{size}` must be a number geater than 1"
-				} else {
-					resp = fmt.Sprintf("Rolled `%v`!", rand.Intn(int(roll))+1)
-				}
+				resp = fmt.Sprintf("Rolled `%v`!", rand.Intn(int(roll))+1)
 			}
 		}
+	}
 
-		return
-	},
+	return
+}
+
+func (mod *ModuleDice) Super() Module {
+	return mod.Module
 }

@@ -1,16 +1,26 @@
 package modules
 
-var ModHelp Module = Module{
-	Keys: []string{
-		"h",
-		"help",
-	},
+var ModHelp ModuleHelp = ModuleHelp{
+	Module{
+		Keys: []string{
+			"h",
+			"help",
+		},
 
-	Name:        "Help",
-	Description: "",
-	How:         "`?help` or `?h`",
-
-	Run: func(args []string) (resp string) {
-		return "A helpful message!"
+		Name:        "Help",
+		Description: "",
+		How:         "`?help` or `?h`",
 	},
+}
+
+type ModuleHelp struct {
+	Module
+}
+
+func (mod *ModuleHelp) Run(args []string) (resp string) {
+	return "A helpful message!"
+}
+
+func (mod *ModuleHelp) Super() Module {
+	return mod.Module
 }

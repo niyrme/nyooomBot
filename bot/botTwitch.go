@@ -67,6 +67,7 @@ func (bot *BotTwitch) Start() {
 	bot.Client = twitch.NewClient("nyooomBot", bot.Token)
 	bot.Client.OnConnect(func() {
 		logging.LogTwitch("Connected.")
+		logging.LogTwitch("Running...")
 	})
 	bot.Client.OnPrivateMessage(func(message twitch.PrivateMessage) {
 		var msg string
@@ -111,8 +112,6 @@ func (bot *BotTwitch) Start() {
 
 	go bot.Client.Connect() // TODO: find a way to handle a potential error
 	go bot.Client.Join("niyrme")
-
-	logging.LogTwitch("Running..")
 
 	bot.C <- nil
 }
