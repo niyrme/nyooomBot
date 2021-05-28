@@ -12,6 +12,6 @@
 		"fabiospampinato.vscode-todo-plus",
 		"editorconfig.editorconfig",
 		"golang.go",
-		"bungcip.better-toml"
+		"bungcip.better-toml",
 	]
 }

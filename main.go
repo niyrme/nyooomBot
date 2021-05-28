@@ -13,8 +13,23 @@ import (
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Error loading .env file! %s", err.Error())
+	var loadedEnv bool = false
+	for _, envVar := range []string{
+		"DISCORD_TOKEN",
+		"TWITCH_TOKEN",
+		"TWITCH_CHANNEL",
+	} {
+		if v := os.Getenv(envVar); v == "" {
+			if !loadedEnv {
+				godotenv.Load()
+				loadedEnv = true
+				if v := os.Getenv(envVar); v == "" {
+					log.Fatalf("Environment variable %s unset!", v)
+				}
+			} else {
+				log.Fatalf("Environment variable %s unset!", v)
+			}
+		}
 	}
 
 	var (
