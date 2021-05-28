@@ -8,8 +8,8 @@ var ModHelp ModuleHelp = ModuleHelp{
 		},
 
 		Name:        "Help",
-		Description: "",
-		How:         "`?help` or `?h`",
+		Description: "Shows how to use a command",
+		How:         "`?help {command}` or `?h {command}`",
 	},
 }
 
@@ -18,7 +18,24 @@ type ModuleHelp struct {
 }
 
 func (mod *ModuleHelp) Run(args []string) (resp string) {
-	return "A helpful message!"
+	resp = ""
+
+	if len(args) == 0 || args[0] == "" {
+		resp = mod.How
+		return
+	}
+
+	for _, cmd := range commands {
+		if contains(cmd.Super().Keys, args[0]) {
+			resp = cmd.Super().How
+		}
+	}
+
+	if resp == "" {
+		resp = "Unknown command " + args[0]
+	}
+
+	return
 }
 
 func (mod *ModuleHelp) Super() Module {

@@ -10,7 +10,6 @@ var commands []_Module = []_Module{
 	&ModDesc,
 	&ModDice,
 	&ModHelp,
-	&ModHow,
 	&ModPing,
 }
 
