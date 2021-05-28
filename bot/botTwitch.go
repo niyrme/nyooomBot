@@ -70,19 +70,19 @@ func (bot *BotTwitch) Start() {
 		logging.LogTwitch("Running...")
 	})
 	bot.Client.OnPrivateMessage(func(message twitch.PrivateMessage) {
-		var msg string
+		var user string = "<" + message.User.DisplayName + ">"
 		if len(message.User.Color) == 7 {
-			msg = colorMsg(message.User.Color[1:], "<"+message.User.Name+">")
-		} else {
-			msg = "<" + message.User.Name + ">"
+			user = colorMsg(message.User.Color[1:], user)
 		}
-		p := 16 - len(message.User.Name)
-		if p <= 1 {
-			p = 1
+
+		padding := 16 - len(message.User.Name)
+		if padding <= 1 {
+			padding = 1
 		}
+
 		logging.LogTwitch(
-			strings.Repeat(" ", p) +
-				" " + msg + " " + // because ansi colors delete spaces
+			strings.Repeat(" ", padding) +
+				" " + user + " " + // because ansi colors delete spaces
 				message.Message)
 
 		if matchCmd := regexCmd.FindStringSubmatch(message.Message); matchCmd != nil {
