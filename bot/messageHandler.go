@@ -3,7 +3,7 @@ package bot
 import (
 	"strings"
 
-	mod "nyooomBot/bot/modules"
+	"nyooomBot/bot/modules"
 	"nyooomBot/logging"
 
 	"github.com/bwmarrin/discordgo"
@@ -36,6 +36,6 @@ func messageHandler(s *discordgo.Session, msg *discordgo.MessageCreate) {
 
 	s.ChannelMessageSend(
 		msg.ChannelID,
-		mod.AnswerCommand(cmd, args),
+		modules.AnswerCommand(cmd, args),
 	)
 }

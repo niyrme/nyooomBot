@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	bot "nyooomBot/bot"
+	"nyooomBot/bot"
 	"nyooomBot/logging"
 
 	"github.com/joho/godotenv"

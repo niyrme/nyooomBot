@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	mod "nyooomBot/bot/modules"
+	"nyooomBot/bot/modules"
 	"nyooomBot/logging"
 
 	"github.com/gempir/go-twitch-irc/v2"
@@ -101,7 +101,7 @@ func (bot *BotTwitch) Start() {
 
 			bot.Client.Say(
 				bot.Channel,
-				mod.AnswerCommand(cmd, args),
+				modules.AnswerCommand(cmd, args),
 			)
 		}
 	})
