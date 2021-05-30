@@ -9,7 +9,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func messageHandler(s *discordgo.Session, msg *discordgo.MessageCreate) {
+func messageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 	if msg.Author.ID == DiscordBot.ID {
 		return
 	}

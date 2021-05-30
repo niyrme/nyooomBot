@@ -50,7 +50,7 @@ func (bot *BotDiscord) Start() {
 	}
 
 	logging.LogDiscord("Adding handlers...")
-	bot.Session.AddHandler(messageHandler)
+	bot.Session.AddHandler(messageCreate)
 
 	logging.LogDiscord("Connecting...")
 	if err := bot.Session.Open(); err != nil {
