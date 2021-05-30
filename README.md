@@ -2,4 +2,4 @@
 
 # nyooomBot
 
-A bot written in Golang.
+A Twitch and Discord bot written in Golang.
