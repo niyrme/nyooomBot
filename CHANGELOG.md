@@ -19,3 +19,4 @@
 - Docker container for bot to run in
 
 [v1.0]: https://github.com/niyrme/nyooomBot/releases/tag/v1.0
+[v2.0]: https://github.com/niyrme/nyooomBot/compare/v1.0...v2.0
