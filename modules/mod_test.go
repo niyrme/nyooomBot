@@ -1,7 +1,7 @@
 package modules_test
 
 import (
-	"nyooomBot/bot/modules"
+	"nyooomBot-Twitch/modules"
 	"testing"
 )
 

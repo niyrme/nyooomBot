@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  bot-discord:
+    build:
+      context: .
+      dockerfile: ./nyooomBot-Discord.Dockerfile
+    restart: always
+    environment:
+      - TOKEN=${DISCORD_TOKEN}
+
+  bot-twitch:
+    build:
+      context: ./
+      dockerfile: ./nyooomBot-Twitch.Dockerfile
+    environment:
+      - TOKEN=${TWITCH_TOKEN}
+      - CHANNEL=${TWITCH_CHANNEL}

@@ -1,16 +1,14 @@
-package bot
+package main
 
 import (
+	"nyooomBot-Discord/modules"
 	"strings"
-
-	"nyooomBot/bot/modules"
-	"nyooomBot/logging"
 
 	"github.com/bwmarrin/discordgo"
 )
 
 func messageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
-	if msg.Author.ID == DiscordBot.ID {
+	if msg.Author.ID == Bot.ID {
 		return
 	}
 
@@ -18,10 +16,9 @@ func messageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 	if p <= 1 {
 		p = 1
 	}
-	logging.LogDiscord(
-		strings.Repeat(" ", p) +
-			" <" + msg.Author.Username + "> " +
-			strings.ReplaceAll(msg.Content, "\n", " \\n "))
+	chanLog <- (strings.Repeat(" ", p) +
+		" <" + msg.Author.Username + "> " +
+		strings.ReplaceAll(msg.Content, "\n", " \\n "))
 
 	if msg.Content[0] != '?' {
 		return
