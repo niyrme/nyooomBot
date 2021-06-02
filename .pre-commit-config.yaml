@@ -18,7 +18,11 @@ repos:
     hooks:
     -   id: go-fmt
     -   id: go-imports
--   repo: https://github.com/IamTheFij/docker-pre-commit
-    rev: v2.0.0
+-   repo: local
     hooks:
-    -   id: docker-compose-check
+    -   id: check-docker-compose
+        name: Check docker-compose
+        entry: docker-compose config --quiet --file
+        files: ^docker-compose.yml$
+        language: python
+        additional_dependencies: [docker-compose]
