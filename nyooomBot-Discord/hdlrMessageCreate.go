@@ -2,10 +2,13 @@ package main
 
 import (
 	"nyooomBot-Discord/modules"
+	"regexp"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
 )
+
+var regexCmd *regexp.Regexp = regexp.MustCompile(`^\?(\w+)\s?(\w+)?`)
 
 func messageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 	if msg.Author.ID == Bot.ID {
@@ -20,19 +23,15 @@ func messageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 		" <" + msg.Author.Username + "> " +
 		strings.ReplaceAll(msg.Content, "\n", " \\n "))
 
-	if msg.Content[0] != '?' {
-		return
+	if matchCmd := regexCmd.FindStringSubmatch(msg.Content); matchCmd != nil {
+		var (
+			cmd  string   = strings.TrimSpace(matchCmd[1])
+			args []string = strings.Split(strings.TrimSpace(matchCmd[2]), " ")
+		)
+
+		s.ChannelMessageSend(
+			msg.ChannelID,
+			modules.AnswerCommand(cmd, args),
+		)
 	}
-
-	_cmarg := strings.Split(strings.ToLower(msg.Content[1:]), " ")
-
-	var (
-		cmd  string   = _cmarg[0]
-		args []string = _cmarg[1:]
-	)
-
-	s.ChannelMessageSend(
-		msg.ChannelID,
-		modules.AnswerCommand(cmd, args),
-	)
 }
