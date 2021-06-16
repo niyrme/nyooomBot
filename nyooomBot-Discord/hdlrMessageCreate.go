@@ -26,7 +26,7 @@ func messageCreate(s *discordgo.Session, msg *discordgo.MessageCreate) {
 	if matchCmd := regexCmd.FindStringSubmatch(msg.Content); matchCmd != nil {
 		var (
 			cmd  string   = strings.TrimSpace(matchCmd[1])
-			args []string = strings.Split(strings.TrimSpace(matchCmd[2]), " ")
+			args []string = strings.Fields(strings.TrimSpace(matchCmd[2]))
 		)
 
 		s.ChannelMessageSend(
