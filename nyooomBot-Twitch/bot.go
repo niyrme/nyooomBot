@@ -48,7 +48,7 @@ func (b *bot) start() {
 
 		if matchCmd := regexCmd.FindStringSubmatch(message.Message); matchCmd != nil {
 			cmd := strings.TrimSpace(matchCmd[1])
-			args := strings.Split(strings.TrimSpace(matchCmd[2]), " ")
+			args := strings.Fields(strings.TrimSpace(matchCmd[2]))
 
 			if cmd == "disconnect" {
 				if message.User.Name == b.Channel {
