@@ -11,7 +11,7 @@ var commands []_Module = []_Module{
 	&ModDice,
 	&ModHelp,
 	&ModPing,
-	&ModSource,
+	&ModBot,
 }
 
 type _Module interface {
