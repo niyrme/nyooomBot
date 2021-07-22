@@ -6,7 +6,7 @@ var ModBot ModuleBot = ModuleBot{
 			"bot",
 		},
 
-		Name:        "Source",
+		Name:        "Bot",
 		Description: "Tells you where to find my source code",
 		How:         "`?bot`",
 	},
