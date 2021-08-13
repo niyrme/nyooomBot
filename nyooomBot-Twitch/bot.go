@@ -32,6 +32,10 @@ func (b *bot) start() {
 		chanLog <- "Running..."
 	})
 	b.Client.OnPrivateMessage(func(message twitch.PrivateMessage) {
+		if strings.Contains(message.Message, "bigfollows . com") {
+			b.Client.Say(b.Channel, fmt.Sprintf("/ban @%s no", message.User.Name))
+			return
+		}
 		var user string = "<" + message.User.DisplayName + ">"
 		if len(message.User.Color) == 7 {
 			user = colorMsg(message.User.Color[1:], user)
