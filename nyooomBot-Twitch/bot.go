@@ -34,6 +34,7 @@ func (b *bot) start() {
 	b.Client.OnPrivateMessage(func(message twitch.PrivateMessage) {
 		if strings.Contains(message.Message, "bigfollows . com") {
 			b.Client.Say(b.Channel, fmt.Sprintf("/ban @%s no", message.User.Name))
+			chanLog <- fmt.Sprintf("Banned bot [%s]", message.User.DisplayName)
 			return
 		}
 		var user string = "<" + message.User.DisplayName + ">"
