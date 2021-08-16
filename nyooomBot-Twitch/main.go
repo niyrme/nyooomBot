@@ -12,6 +12,7 @@ var (
 	/// Channels
 	chanErr chan error  = make(chan error, 16)
 	chanLog chan string = make(chan string, 128)
+	chanMod chan string = make(chan string, 32)
 )
 
 func main() {
@@ -29,6 +30,7 @@ func main() {
 	// Because you can't do go func() { }
 	go listenErr()
 	go listenLog()
+	go listenMod()
 
 	go Bot.start()
 
@@ -43,6 +45,12 @@ func main() {
 func listenLog() {
 	for {
 		lgrInfo.Println(<-chanLog)
+	}
+}
+
+func listenMod() {
+	for {
+		lgrMod.Println(<-chanMod)
 	}
 }
 

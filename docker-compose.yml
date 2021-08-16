@@ -3,7 +3,7 @@ version: "3"
 services:
   bot-discord:
     build:
-      context: .
+      context: ./
       dockerfile: ./nyooomBot-Discord.Dockerfile
     restart: always
     environment:
